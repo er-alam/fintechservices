@@ -1,40 +1,49 @@
 package main
 
 import (
-	"log"
-	"log/slog"
-	"time"
-
+	controller "fintechservices/controllers"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io"
+	"net/http"
+	"os"
+	"time"
 )
 
 type Person struct {
-	Name     string    `form:"name"`
-	Address  string    `form:"address"`
-	Birthday time.Time `form:"birthday" time_format:"2006-01-02" time_utc:"1"`
+	Name     string    `json:"name" binding:"required"`
+	Address  string    `json:"address"`
+	Birthday time.Time `json:"birthday" binding:"required", time_format:"02-01-2006"`
 }
 
 func main() {
-	route := gin.Default()
-	route.GET("/index", startPage)
-	route.Run()
-}
+	gin.DisableConsoleColor()
 
-func startPage(c *gin.Context) {
-	var person Person
-	// If `GET`, only `Form` binding engine (`query`) used.
-	// If `POST`, first checks the `content-type` for `JSON` or `XML`, then uses `Form` (`form-data`).
-	// See more at https://github.com/gin-gonic/gin/blob/master/binding/binding.go#L48
-	if c.ShouldBind(&person) == nil {
-		slog.Error(person.Name)
-		slog.Error(person.Address)
-		log.Println(person.Birthday)
+	var file_name string = "gin.log"
+	logfile, err := os.Create(file_name)
+	if err != nil {
+		panic(err)
+	}
+	defer logfile.Close()
+
+	if err != nil {
+		panic(err)
 	}
 
-	c.JSON(200, gin.H{
-		"name":     person.Name,
-		"address":  person.Address,
-		"birthday": person.Birthday,
-		"message":  "success",
+	gin.DefaultWriter = io.MultiWriter(logfile)
+
+	route := gin.Default()
+	route.GET("/index", controller.Index)
+	route.POST("/test", func(c *gin.Context) {
+		var body Person
+
+		if err := c.BindJSON(&body); err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		poit := &body
+		logfile.WriteString(fmt.Sprintf("%+v\n", *poit))
+		c.JSON(http.StatusAccepted, &body)
 	})
+	route.Run()
 }
