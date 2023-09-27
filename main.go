@@ -3,11 +3,12 @@ package main
 import (
 	controller "fintechservices/controllers"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Person struct {
@@ -42,7 +43,7 @@ func main() {
 			return
 		}
 		poit := &body
-		logfile.WriteString(fmt.Sprintf("%+v\n", *poit))
+		logfile.WriteString(fmt.Sprintf("Request : %+v\n", *poit))
 		c.JSON(http.StatusAccepted, &body)
 	})
 	route.Run()

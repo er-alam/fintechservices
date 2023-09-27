@@ -10,5 +10,7 @@
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
 [GIN-debug] Listening and serving HTTP on :8080
-{Name:ALAM Address:NEW Delhi Birthday:2023-03-09 15:06:55 +0000 UTC}
-[GIN] 2023/09/28 - 04:13:26 | 202 |    1.078602ms |             ::1 | POST     "/test"
+Request : {Name:ALAM Address:NEW Delhi Birthday:2023-03-09 15:06:55 +0000 UTC}
+[GIN] 2023/09/28 - 04:19:51 | 202 |     721.732µs |             ::1 | POST     "/test"
+Request : {Name:ALAM Address:NEW Delhi Birthday:2023-03-09 15:06:55 +0000 UTC}
+[GIN] 2023/09/28 - 04:19:52 | 202 |     111.737µs |             ::1 | POST     "/test"
