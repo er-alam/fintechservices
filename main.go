@@ -16,7 +16,7 @@ type Person struct {
 
 func main() {
 	route := gin.Default()
-	route.GET("/testing", startPage)
+	route.GET("/index", startPage)
 	route.Run()
 }
 
