@@ -30,4 +30,5 @@ func Index(c *gin.Context) {
 		"birthday": person.Birthday,
 		"message":  "success",
 	})
+
 }
